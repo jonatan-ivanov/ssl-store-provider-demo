@@ -3,6 +3,7 @@ build/
 
 *.log
 
+out/
 *.iml
 *.ipr
 *.iws
