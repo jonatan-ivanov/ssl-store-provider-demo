@@ -6,6 +6,8 @@ import org.springframework.boot.context.embedded.SslStoreProvider;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +31,8 @@ public class InMemorySslStoreProvider implements SslStoreProvider {
 
     @Override
     public KeyStore getTrustStore() throws Exception {
-        return null;
+        byte[] bytes = Files.readAllBytes(Paths.get(System.getenv("JAVA_HOME"),"/jre/lib/security/cacerts"));
+        return load(bytes, ssl.getTrustStoreType(), ssl.getTrustStorePassword());
     }
 
     private KeyStore load(byte[] bytes, String type, String password) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
